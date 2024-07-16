@@ -6,11 +6,11 @@
 #include <math.h>
 #include "lib.h"
 
-#define VERDE "\033[0;32m"
-#define BLANCO "\033[0;37m"
+#define GREEN "\033[0;32m"
+#define WHITE "\033[0;37m"
 
-#define TILDE "✓"
-#define CRUZ "✗"
+#define CHECK "✓"
+#define CROSS "✗"
 
 funcCmp_t *getCompareFunction(type_t t);
 funcClone_t *getCloneFunction(type_t t);
@@ -37,14 +37,14 @@ void testlogSeparator()
 
 void testlogAfirm(char *type, int num, char *description)
 {
-    printf(VERDE "   %s ", TILDE);
+    printf(GREEN "   %s ", CHECK);
     if (num < 10)
     {
-        printf(BLANCO " 0%i - %s - %s \n", num, type, description);
+        printf(WHITE " 0%i - %s - %s \n", num, type, description);
     }
     else
     {
-        printf(BLANCO " %i - %s - %s \n", num, type, description);
+        printf(WHITE " %i - %s - %s \n", num, type, description);
     }
 }
 
@@ -76,28 +76,28 @@ void strDeleteC(char *str)
 
 /*---------------------------------- INT TEST -------------------------------------------*/
 
-void test01IntCmpConPrimerElementoMayorAlSegundo(char *testType, int testNum, int *number, int *number_2)
+void test01IntCmpWithFirstElementGreaterThanSecond(char *testType, int testNum, int *number, int *number_2)
 {
 
     assert(intCmp(number, number_2) == -1);
-    testlogAfirm(testType, testNum, "Cuando el primer parametro es mayor al segundo IntCmp devuelve -1");
+    testlogAfirm(testType, testNum, "When the first argument is greater than the second one, IntCmp returns -1");
 }
 
-void test02IntCmpConPrimerElementoMenorAlSegundo(char *testType, int testNum, int *number, int *number_2)
+void test02IntCmpWithFirstElementLessThanSecond(char *testType, int testNum, int *number, int *number_2)
 {
 
     assert(intCmp(number, number_2) == 1);
-    testlogAfirm(testType, testNum, "Cuando el primer párametro es menor al segundo IntCmpDevuelve 1");
+    testlogAfirm(testType, testNum, "When the first argument is lower than the second one, IntCmp returns -1");
 }
 
-void test03IntCmpConDosNumerosIguales(char *testType, int testNum, int *number)
+void test03IntCmpWithEqualNumbers(char *testType, int testNum, int *number)
 {
 
-    testlogAfirm(testType, testNum, "Dados nos números iguales IntCmp devuelve 0");
+    testlogAfirm(testType, testNum, "Given two equal numbers, IntCmp devuelve 0");
     assert(intCmp(number, number) == 0);
 }
 
-void test04IntPrintDeUnElemento(char *testType, int testNum, int *number)
+void test04IntPrint(char *testType, int testNum, int *number)
 {
     FILE *file = fopen("outInt.txt", "w");
 
@@ -110,438 +110,438 @@ void test04IntPrintDeUnElemento(char *testType, int testNum, int *number)
 
     assert(intCmp(number, &numberInStream) == 0);
 
-    testlogAfirm(testType, testNum, "Dado un entero intPrint lo imprime correctamente en el stream pasado por parámetro.");
+    testlogAfirm(testType, testNum, "Given an integer, intPrint prints it correctly in the given stream.");
     fclose(file);
 }
 
-void test05IntCloneDeUnElemento(char *testType, int testNum, int *number)
+void test05IntClone(char *testType, int testNum, int *number)
 {
-    int *copia = intClone(number);
-    assert(intCmp(number, copia) == 0);
-    assert(copia != number);
-    testlogAfirm(testType, testNum, "Dado un entero IntClone devuelve el mismo numero en una direccion de memoria distinta");
-    intDelete(copia);
+    int *copy = intClone(number);
+    assert(intCmp(number, copy) == 0);
+    assert(copy != number);
+    testlogAfirm(testType, testNum, "Given an integer, IntClone returns the same number located in a different memory address");
+    intDelete(copy);
 }
 
 /*---------------------------------- LIST TEST -------------------------------------------*/
 
-void test01ListNewSinElementos(char *testType, int testNum)
+void test01ListNewWithoutElements(char *testType, int testNum)
 {
-    list_t *lista = listNew(0);
+    list_t *list = listNew(0);
 
-    assert(lista->size == 0);
-    assert(lista->first == NULL);
-    assert(lista->last == NULL);
+    assert(list->size == 0);
+    assert(list->first == NULL);
+    assert(list->last == NULL);
 
-    testlogAfirm(testType, testNum, "Se crea una lista vacia y se inicializa correctamente");
+    testlogAfirm(testType, testNum, "An empty list is created and it's initialized correctly");
 
-    listDelete(lista);
+    listDelete(list);
 }
 
-void test02ListAddFirstEnListaSinElementos(char *testType, int testNum)
+void test02ListAddFirstInEmptyList(char *testType, int testNum)
 {
-    list_t *lista = listNew(1);
-    int nuevo_elemento = 5;
+    list_t *list = listNew(1);
+    int new_element = 5;
 
-    listAddFirst(lista, &nuevo_elemento);
-    assert(lista->size == 1);
-    assert(intCmp(lista->first->data, &nuevo_elemento) == 0);
-    assert(intCmp(lista->last->data, &nuevo_elemento) == 0);
-    assert(&nuevo_elemento != (lista->first->data));
-    testlogAfirm(testType, testNum, "Se agrega un elemento en la primera posicion de la lista correctamente");
-    listDelete(lista);
+    listAddFirst(list, &new_element);
+    assert(list->size == 1);
+    assert(intCmp(list->first->data, &new_element) == 0);
+    assert(intCmp(list->last->data, &new_element) == 0);
+    assert(&new_element != (list->first->data));
+    testlogAfirm(testType, testNum, "An element is added to the beginning of the list successfully");
+    listDelete(list);
 }
 
-void test03ListAddFirstConsecutivosEnListaSinElementos(char *testType, int testNum)
+void test03ListAddFirstConsecutivesInEmptyList(char *testType, int testNum)
 {
-    list_t *lista = listNew(1);
-    int elemento = 10;
-    int elemento2 = 20;
-    int elemento3 = 30;
+    list_t *list = listNew(1);
+    int element = 10;
+    int element2 = 20;
+    int element3 = 30;
 
-    listAddFirst(lista, &elemento);
-    listAddFirst(lista, &elemento2);
-    listAddFirst(lista, &elemento3);
-    assert(lista->size == 3);
-    assert(intCmp(lista->first->data, &elemento3) == 0);
-    assert(intCmp(lista->first->next->data, &elemento2) == 0);
-    assert(intCmp(lista->last->data, &elemento) == 0);
+    listAddFirst(list, &element);
+    listAddFirst(list, &element2);
+    listAddFirst(list, &element3);
+    assert(list->size == 3);
+    assert(intCmp(list->first->data, &element3) == 0);
+    assert(intCmp(list->first->next->data, &element2) == 0);
+    assert(intCmp(list->last->data, &element) == 0);
 
-    testlogAfirm(testType, testNum, "Se agregan varios elementos sucesivamente en la primera posicion de una lista correctamente");
-    listDelete(lista);
+    testlogAfirm(testType, testNum, "Various elements are added to the first position of the list successfully");
+    listDelete(list);
 }
 
-void test04ListGetSizeConListaSinElementos(char *testType, int testNum)
+void test04ListGetSizeWithEmptyList(char *testType, int testNum)
 {
-    list_t *lista = listNew(1);
+    list_t *list = listNew(1);
 
-    assert(listGetSize(lista) == 0);
-    testlogAfirm(testType, testNum, "Dada una lista vacia listGetSize devuelve 0");
-    listDelete(lista);
+    assert(listGetSize(list) == 0);
+    testlogAfirm(testType, testNum, "Given an empty list, listGetSize returns 0");
+    listDelete(list);
 }
 
-void test05ListGetSizeConListaDeVariosElementos(char *testType, int testNum)
+void test05ListGetSizeListWithSomeElements(char *testType, int testNum)
 {
-    list_t *lista = listNew(1);
-    int elemento = 10;
-    int elemento2 = 20;
-    int elemento3 = 30;
+    list_t *list = listNew(1);
+    int element = 10;
+    int element2 = 20;
+    int element3 = 30;
 
-    listAddFirst(lista, &elemento);
-    listAddFirst(lista, &elemento2);
-    listAddFirst(lista, &elemento3);
-    assert(listGetSize(lista) == 3);
-    testlogAfirm(testType, testNum, "Dada una lista con varios elementos listGetSize devuelve la cantidad correcta");
-    listDelete(lista);
+    listAddFirst(list, &element);
+    listAddFirst(list, &element2);
+    listAddFirst(list, &element3);
+    assert(listGetSize(list) == 3);
+    testlogAfirm(testType, testNum, "Given a list with some elements, listGetSize returns the correct amount");
+    listDelete(list);
 }
 
-void test06ListGetConListaDeVariosElementos(char *testType, int testNum)
+void test06ListGetWithSomeElements(char *testType, int testNum)
 {
-    list_t *lista = listNew(1);
-    int elemento = 10;
-    int elemento2 = 20;
-    int elemento3 = 30;
+    list_t *list = listNew(1);
+    int element = 10;
+    int element2 = 20;
+    int element3 = 30;
 
-    listAddFirst(lista, &elemento);
-    listAddFirst(lista, &elemento2);
-    listAddFirst(lista, &elemento3);
-    assert(intCmp(listGet(lista, 1), &elemento2) == 0);
-    testlogAfirm(testType, testNum, "Dada una lista con varios elementos se obtiene el elemento en la posicion desdeada correctamente");
-    listDelete(lista);
+    listAddFirst(list, &element);
+    listAddFirst(list, &element2);
+    listAddFirst(list, &element3);
+    assert(intCmp(listGet(list, 1), &element2) == 0);
+    testlogAfirm(testType, testNum, "Given a list with some elements, the element in the given position is obtained successfully");
+    listDelete(list);
 }
 
-void test07ListAddLastEnListaVacia(char *testType, int testNum)
+void test07ListAddLastWithEmptyList(char *testType, int testNum)
 {
-    list_t *lista = listNew(1);
-    int nuevo_elemento = 5;
+    list_t *list = listNew(1);
+    int new_element = 5;
 
-    listAddLast(lista, &nuevo_elemento);
-    assert(lista->size == 1);
-    assert(intCmp(listGet(lista, 0), &nuevo_elemento) == 0);
-    assert(&nuevo_elemento != (lista->first->data));
-    testlogAfirm(testType, testNum, "Dada una lista vacia se agrega un elemento en la ultima posicion correctamente");
-    listDelete(lista);
+    listAddLast(list, &new_element);
+    assert(list->size == 1);
+    assert(intCmp(listGet(list, 0), &new_element) == 0);
+    assert(&new_element != (list->first->data));
+    testlogAfirm(testType, testNum, "Given an empty list, an element is added to the last position successfully");
+    listDelete(list);
 }
 
-void test08ListRemoveEnListaSinElementos(char *testType, int testNum)
+void test08ListRemoveWithEmptyList(char *testType, int testNum)
 {
-    list_t *lista = listNew(1);
+    list_t *list = listNew(1);
 
-    assert(listRemove(lista, 10) == 0);
-    testlogAfirm(testType, testNum, "Dada una lista vacia eliminar el elemento en la posicion 10 devuelve 0");
-    listDelete(lista);
+    assert(listRemove(list, 10) == 0);
+    testlogAfirm(testType, testNum, "Given an empty list, removing the element in the position 10 returns 0");
+    listDelete(list);
 }
 
-void test09ListRemoveEnListaConVariosElementos(char *testType, int testNum)
+void test09ListRemoveListWithSomeElements(char *testType, int testNum)
 {
-    list_t *lista = listNew(1);
-    int elemento = 10;
-    int elemento2 = 20;
-    int elemento3 = 30;
+    list_t *list = listNew(1);
+    int element = 10;
+    int element2 = 20;
+    int element3 = 30;
 
-    listAddLast(lista, &elemento);
-    listAddLast(lista, &elemento2);
-    listAddLast(lista, &elemento3);
+    listAddLast(list, &element);
+    listAddLast(list, &element2);
+    listAddLast(list, &element3);
 
-    void *elemento_obtenido = listRemove(lista, 1);
-    assert(lista->size == 2);
-    assert(intCmp(listGet(lista, 1), &elemento3) == 0);
-    assert(intCmp(elemento_obtenido, &elemento2) == 0);
-    intDelete(elemento_obtenido);
-    testlogAfirm(testType, testNum, "Dada una lista con varios elementos se elimina correctamente el elemento en la posicion pedida");
-    listDelete(lista);
+    void *obtained_element = listRemove(list, 1);
+    assert(list->size == 2);
+    assert(intCmp(listGet(list, 1), &element3) == 0);
+    assert(intCmp(obtained_element, &element2) == 0);
+    intDelete(obtained_element);
+    testlogAfirm(testType, testNum, "Given a list with some elements, the element in the given position is removed successfully");
+    listDelete(list);
 }
 
-void test10ListSwapDeListaVacia(char *testType, int testNum)
+void test10ListSwapWithEmptyList(char *testType, int testNum)
 {
-    list_t *lista = listNew(1);
+    list_t *list = listNew(1);
 
-    listSwap(lista, 10, 100);
-    testlogAfirm(testType, testNum, "Dada una lista vacia swapear dos elementos no realiza ninguna accion");
-    listDelete(lista);
+    listSwap(list, 10, 100);
+    testlogAfirm(testType, testNum, "Given an empty list, swapping two elements does nothing");
+    listDelete(list);
 }
 
-void test11ListSwapEnListaConUnSoloElemento(char *testType, int testNum)
+void test11ListSwapListWithOneElement(char *testType, int testNum)
 {
-    list_t *lista = listNew(1);
-    int elemento = 10;
-    listAddFirst(lista, &elemento);
+    list_t *list = listNew(1);
+    int element = 10;
+    listAddFirst(list, &element);
 
-    listSwap(lista, 0, 100);
-    testlogAfirm(testType, testNum, "Dada una lista con un elemento swapear dos elementos no realiza ninguna accion");
-    listDelete(lista);
+    listSwap(list, 0, 100);
+    testlogAfirm(testType, testNum, "Given a list with one element, swapping two elements does nothing");
+    listDelete(list);
 }
 
-void test12ListSwapEnListaDeVariosElementos(char *testType, int testNum)
+void test12ListSwapListWithSomeElements(char *testType, int testNum)
 {
-    list_t *lista = listNew(1);
-    int elemento = 10;
-    int elemento2 = 20;
-    int elemento3 = 30;
-    int elemento4 = 50;
+    list_t *list = listNew(1);
+    int element = 10;
+    int element2 = 20;
+    int element3 = 30;
+    int element4 = 50;
 
-    listAddLast(lista, &elemento);
-    listAddLast(lista, &elemento2);
-    listAddLast(lista, &elemento3);
-    listAddLast(lista, &elemento4);
+    listAddLast(list, &element);
+    listAddLast(list, &element2);
+    listAddLast(list, &element3);
+    listAddLast(list, &element4);
 
-    listSwap(lista, 0, 3);
-    assert(intCmp(listGet(lista, 0), &elemento4) == 0);
-    assert(intCmp(listGet(lista, 3), &elemento) == 0);
-    testlogAfirm(testType, testNum, "Dada una lista con varios elementos swapear dos en posiciones validas elegidas arbitrariamente funciona correctamente");
-    listDelete(lista);
+    listSwap(list, 0, 3);
+    assert(intCmp(listGet(list, 0), &element4) == 0);
+    assert(intCmp(listGet(list, 3), &element) == 0);
+    testlogAfirm(testType, testNum, "Given a list with some elements, swapping two elements in valid positions works successfully");
+    listDelete(list);
 }
 
-void test13ListCloneDeListaVacia(char *testType, int testNum)
+void test13ListCloneEmptyList(char *testType, int testNum)
 {
-    list_t *lista = listNew(1);
+    list_t *list = listNew(1);
 
-    list_t *nuevaLista = listClone(lista);
+    list_t *newList = listClone(list);
 
-    assert(nuevaLista->first == NULL);
-    assert(nuevaLista->type == lista->type);
-    assert(nuevaLista->last == NULL);
-    testlogAfirm(testType, testNum, "Clonar una lista vacia devuelve otra lista vacia");
-    listDelete(lista);
-    listDelete(nuevaLista);
+    assert(newList->first == NULL);
+    assert(newList->type == list->type);
+    assert(newList->last == NULL);
+    testlogAfirm(testType, testNum, "Cloning an empty list returns an empty list");
+    listDelete(list);
+    listDelete(newList);
 }
 
-void test14ListCloneDeListaConUnElemento(char *testType, int testNum)
+void test14ListCloneListWithOneElement(char *testType, int testNum)
 {
-    list_t *lista = listNew(1);
-    int elemento = 10;
+    list_t *list = listNew(1);
+    int element = 10;
 
-    listAddLast(lista, &elemento);
+    listAddLast(list, &element);
 
-    list_t *nuevaLista = listClone(lista);
+    list_t *newList = listClone(list);
 
-    assert(intCmp(lista->first->data, nuevaLista->first->data) == 0);
-    assert(intCmp(lista->last->data, nuevaLista->last->data) == 0);
-    assert(nuevaLista->type == lista->type);
-    assert(nuevaLista->size == lista->size);
-    testlogAfirm(testType, testNum, "Una lista con un elemento se clona correctamente");
-    listDelete(lista);
-    listDelete(nuevaLista);
+    assert(intCmp(list->first->data, newList->first->data) == 0);
+    assert(intCmp(list->last->data, newList->last->data) == 0);
+    assert(newList->type == list->type);
+    assert(newList->size == list->size);
+    testlogAfirm(testType, testNum, "A list with one element clones correctly");
+    listDelete(list);
+    listDelete(newList);
 }
 
-void test15ListCloneDeListaConVariosElementos(char *testType, int testNum)
+void test15ListCloneListWithSomeElements(char *testType, int testNum)
 {
-    list_t *lista = listNew(1);
-    int elemento = 10;
-    int elemento2 = 20;
-    int elemento3 = 30;
-    int elemento4 = 50;
+    list_t *list = listNew(1);
+    int element = 10;
+    int element2 = 20;
+    int element3 = 30;
+    int element4 = 50;
 
-    listAddLast(lista, &elemento);
-    listAddLast(lista, &elemento2);
-    listAddLast(lista, &elemento3);
-    listAddLast(lista, &elemento4);
+    listAddLast(list, &element);
+    listAddLast(list, &element2);
+    listAddLast(list, &element3);
+    listAddLast(list, &element4);
 
-    list_t *nuevaLista = listClone(lista);
+    list_t *newList = listClone(list);
 
-    assert(intCmp(lista->first->data, nuevaLista->first->data) == 0);
-    assert(intCmp(listGet(lista, 1), listGet(nuevaLista, 1)) == 0);
-    assert(intCmp(listGet(lista, 2), listGet(nuevaLista, 2)) == 0);
-    assert(intCmp(lista->last->data, nuevaLista->last->data) == 0);
-    assert(nuevaLista->type == lista->type);
-    assert(nuevaLista->size == lista->size);
+    assert(intCmp(list->first->data, newList->first->data) == 0);
+    assert(intCmp(listGet(list, 1), listGet(newList, 1)) == 0);
+    assert(intCmp(listGet(list, 2), listGet(newList, 2)) == 0);
+    assert(intCmp(list->last->data, newList->last->data) == 0);
+    assert(newList->type == list->type);
+    assert(newList->size == list->size);
 
-    testlogAfirm(testType, testNum, "Una lista varios elementos se clona correctamente");
+    testlogAfirm(testType, testNum, "A list with some elements clones correctly");
 
-    listDelete(lista);
-    listDelete(nuevaLista);
+    listDelete(list);
+    listDelete(newList);
 }
 
-void test16ListPrintDeListaVacia(char *testType, int testNum)
+void test16ListPrintEmptyList(char *testType, int testNum)
 {
-    FILE *file = fopen("outListaVacia.txt", "w");
-    list_t *lista = listNew(1);
-    int contador = 0;
+    FILE *file = fopen("outEmptyList.txt", "w");
+    list_t *list = listNew(1);
+    int counter = 0;
     char ch;
 
-    listPrint(lista, file);
+    listPrint(list, file);
     fclose(file);
 
-    file = fopen("outListaVacia.txt", "r");
+    file = fopen("outEmptyList.txt", "r");
 
     ch = fgetc(file);
     assert(ch == '[');
     ch = fgetc(file);
     assert(ch == ']');
 
-    testlogAfirm(testType, testNum, "Dada una lista vacia, listPrint genera el archivo correspondiente imprimiendo lo esperado '[]'");
+    testlogAfirm(testType, testNum, "Given an empty list, listPrint generates the corresponding file printing the expected: '[]'");
     fclose(file);
-    listDelete(lista);
+    listDelete(list);
 }
 
-void test17ListPrintDeListaConUnElemento(char *testType, int testNum)
+void test17ListPrintListWithOneElement(char *testType, int testNum)
 {
-    FILE *file = fopen("outlistaConUnElemento.txt", "w");
-    list_t *lista = listNew(1);
-    int elemento = 10;
-    listAddLast(lista, &elemento);
+    FILE *file = fopen("outListWithOneElement.txt", "w");
+    list_t *list = listNew(1);
+    int element = 10;
+    listAddLast(list, &element);
 
-    listPrint(lista, file);
+    listPrint(list, file);
     fclose(file);
 
-    file = fopen("outlistaConUnElemento.txt", "r");
-    int elemntoEnStream;
-    fscanf(file, "[%d]", &elemntoEnStream);
+    file = fopen("outListWithOneElement.txt", "r");
+    int elementOnStream;
+    fscanf(file, "[%d]", &elementOnStream);
 
-    assert(intCmp(listGet(lista, 0), &elemntoEnStream) == 0);
+    assert(intCmp(listGet(list, 0), &elementOnStream) == 0);
 
-    testlogAfirm(testType, testNum, "Dada una lista con un elemento, listPrint imprime el elemento en el stream pasado por parámetro");
+    testlogAfirm(testType, testNum, "Given a list with one element, listPrint prints the element in the stream passed by argument");
     fclose(file);
-    listDelete(lista);
+    listDelete(list);
 }
 
-void test18ListPrintDeListaConVariosElementos(char *testType, int testNum)
+void test18ListPrintListWithSomeElements(char *testType, int testNum)
 {
-    FILE *file = fopen("outlista.txt", "w");
-    list_t *lista = listNew(1);
-    int elemento = 10;
-    int elemento2 = 20;
-    int elemento3 = 30;
-    int elemento4 = 50;
+    FILE *file = fopen("outlist.txt", "w");
+    list_t *list = listNew(1);
+    int element = 10;
+    int element2 = 20;
+    int element3 = 30;
+    int element4 = 50;
 
-    listAddLast(lista, &elemento);
-    listAddLast(lista, &elemento2);
-    listAddLast(lista, &elemento3);
-    listAddLast(lista, &elemento4);
+    listAddLast(list, &element);
+    listAddLast(list, &element2);
+    listAddLast(list, &element3);
+    listAddLast(list, &element4);
 
-    listPrint(lista, file);
+    listPrint(list, file);
     fclose(file);
 
-    file = fopen("outlista.txt", "r");
+    file = fopen("outList.txt", "r");
 
-    fscanf(file, "[%d, %d, %d, %d]", &elemento, &elemento2, &elemento3, &elemento4);
+    fscanf(file, "[%d, %d, %d, %d]", &element, &element2, &element3, &element4);
 
-    assert(intCmp(listGet(lista, 0), &elemento) == 0);
-    assert(intCmp(listGet(lista, 1), &elemento2) == 0);
-    assert(intCmp(listGet(lista, 2), &elemento3) == 0);
-    assert(intCmp(listGet(lista, 3), &elemento4) == 0);
+    assert(intCmp(listGet(list, 0), &element) == 0);
+    assert(intCmp(listGet(list, 1), &element2) == 0);
+    assert(intCmp(listGet(list, 2), &element3) == 0);
+    assert(intCmp(listGet(list, 3), &element4) == 0);
 
-    testlogAfirm(testType, testNum, "Dada una lista con elementos, listPrint imprime los mismos en el stream pasado por parámetro");
+    testlogAfirm(testType, testNum, "Given a list with some elements, listPrint prints the same elements on the stream passed by argument");
     fclose(file);
-    listDelete(lista);
+    listDelete(list);
 }
 
 /*---------------------------------- STR TEST -------------------------------------------*/
 
-void test01StrDeleteVacio(char *testType, int testNum)
+void test01StrDeleteEmpty(char *testType, int testNum)
 {
     char *str = malloc(10 * sizeof(char));
-    testlogAfirm(testType, testNum, "Dado un str vacío, strDelete lo elimina");
+    testlogAfirm(testType, testNum, "Given an empty string, strDelete deletes it");
     strDelete(str);
 }
 
-void test02StrDeleteNoVacio(char *testType, int testNum)
+void test02StrDeleteNotEmpty(char *testType, int testNum)
 {
     char *str = malloc(20 * sizeof(char));
-    strcpy(str, "hola mundo");
-    testlogAfirm(testType, testNum, "Dado un str no vacío, strDelete lo elimina");
+    strcpy(str, "Hello World");
+    testlogAfirm(testType, testNum, "Given a not empty string, strDelete deletes it");
     strDelete(str);
 }
 
-void test03StrLenVacio(char *testType, int testNum)
+void test03StrLenEmpty(char *testType, int testNum)
 {
     char string[] = "";
     int len = strLen(string);
     assert(len == 0);
-    testlogAfirm(testType, testNum, "strLen = 0 con un string vacio");
+    testlogAfirm(testType, testNum, "strLen = 0 with an empty string");
 }
 
 void test04StrLen(char *testType, int testNum)
 {
-    char string[] = "holaaa";
+    char string[] = "helloo";
     int len = strLen(string);
     assert(len == 6);
-    testlogAfirm(testType, testNum, "strLen con un string no vacio");
+    testlogAfirm(testType, testNum, "strLen with a not empty string");
 }
 
 void test05StrPrint(char *testType, int testNum)
 {
-    char str[10] = "hola mundo";
+    char str[12] = "Hello World";
     FILE *file = fopen("outStr.txt", "w");
     strPrint(str, file);
     fclose(file);
 
-    int bufferLength = 11;
+    int bufferLength = 12;
     char buffer[bufferLength];
     file = fopen("outStr.txt", "r");
     fgets(buffer, bufferLength, file);
-    assert(strcmp(buffer, "hola mundo") == 0);
+    assert(strcmp(buffer, "Hello World") == 0);
     fclose(file);
-    testlogAfirm(testType, testNum, "Dado un str, strPrint lo imprime en un archivo pasado por parametro");
+    testlogAfirm(testType, testNum, "Given a str, strPrint prints it in a file passed by argument");
 }
 
-void test06StrPrintVacio(char *testType, int testNum)
+void test06StrPrintEmpty(char *testType, int testNum)
 {
     char str[10] = "";
-    FILE *file = fopen("outStrVacio.txt", "w");
+    FILE *file = fopen("outStrEmpty.txt", "w");
     strPrint(str, file);
     fclose(file);
 
     int bufferLength = 5;
     char buffer[bufferLength];
-    file = fopen("outStrVacio.txt", "r");
+    file = fopen("outStrEmpty.txt", "r");
     fgets(buffer, bufferLength, file);
     assert(strcmp(buffer, "NULL") == 0);
     fclose(file);
-    testlogAfirm(testType, testNum, "Dado un str vacio, strPrint imprime NULL archivo pasado por parametro");
+    testlogAfirm(testType, testNum, "Given an empty string, strPrint prints NULL in a file passed by argument");
 }
 
-void test07StrCloneEnStringConVariosElementos(char *testType, int testNum)
+void test07StrCloneStringWithSomeElements(char *testType, int testNum)
 {
     char *string = "VAMOSSS RIVERRR";
     char *copy = strClone(string);
     assert(strcmp(string, copy) == 0);
     assert(string != copy);
-    testlogAfirm(testType, testNum, "strClone de String con Varios Elementos");
+    testlogAfirm(testType, testNum, "strClone of string with some elements");
     free(copy);
 }
 
-void test08StrCloneDeStringVacio(char *testType, int testNum)
+void test08StrCloneEmptyString(char *testType, int testNum)
 {
     char *string = "";
     char *copy = strClone(string);
     assert(strcmp(string, copy) == 0);
     assert(string != copy);
-    testlogAfirm(testType, testNum, "strClone de String Vacio");
+    testlogAfirm(testType, testNum, "strClone of empty string");
     free(copy);
 }
 
-void test09StrCmpDeDosStringsConVariosElementos(char *testType, int testNum)
+void test09StrCmpOfTwoStringWithSomeElements(char *testType, int testNum)
 {
     char string[] = "aaaaa";
-    char otro[] = "holaaa";
-    int resultado = 0;
-    resultado = strCmp(string, otro);
-    assert(resultado == 1);
+    char otro[] = "helloo";
+    int result = 0;
+    result = strCmp(string, otro);
+    assert(result == 1);
 
-    testlogAfirm(testType, testNum, "strCmp de dos strings con elementos");
+    testlogAfirm(testType, testNum, "strCmp of two string with some elements");
 }
 
-void test10StrCmpDeDosStringsVacios(char *testType, int testNum)
+void test10StrCmpOfTwoEmptyStrings(char *testType, int testNum)
 {
     char string[] = "";
-    char otro[] = "";
-    int resultado = 0;
-    resultado = strCmp(string, otro);
-    assert(resultado == 0);
+    char another[] = "";
+    int result = 0;
+    result = strCmp(string, another);
+    assert(result == 0);
 
-    testlogAfirm(testType, testNum, "strCmp de dos strings vacios");
+    testlogAfirm(testType, testNum, "strCmp of two empty strings");
 }
 
-void test11StrCmpConUnStrinVacio(char *testType, int testNum)
+void test11StrCmpWithAnEmptyString(char *testType, int testNum)
 {
-    char string[] = "holaaa";
-    char otro[] = "";
-    int resultado = 0;
-    resultado = strCmp(string, otro);
-    assert(resultado == -1);
+    char string[] = "helloo";
+    char another[] = "";
+    int result = 0;
+    result = strCmp(string, another);
+    assert(result == -1);
 
-    testlogAfirm(testType, testNum, "strCmp con un string vacio");
+    testlogAfirm(testType, testNum, "strCmp with empty string");
 }
 
 /*---------------------------------- ARRAY TEST -------------------------------------------*/
@@ -555,51 +555,51 @@ void test01ArrayNew(char *testType, int testNum)
     arrayDeleteC(a);
 }
 
-void test02ArrayAddLastConUnElemento(char *testType, int testNum)
+void test02ArrayAddLastWithOneElement(char *testType, int testNum)
 {
     array_t *a = arrayNew(1, 10);
     int num = 3;
     arrayAddLast(a, &num);
     assert(*(int *)(a->data[0]) == 3);
     assert(a->size == 1);
-    testlogAfirm(testType, testNum, "Se agrega un elemento al final de un array vacio");
+    testlogAfirm(testType, testNum, "An element is added at the end of an empty array");
     arrayDelete(a);
 }
 
-void test03ArrayAddLastConVariosElementos(char *testType, int testNum)
+void test03ArrayAddLastWithSomeElements(char *testType, int testNum)
 {
     array_t *a = arrayNew(1, 10);
-    int elemento = 10;
-    int elemento2 = 20;
-    int elemento3 = 30;
-    arrayAddLast(a, &elemento);
-    arrayAddLast(a, &elemento2);
-    arrayAddLast(a, &elemento3);
+    int element = 10;
+    int element2 = 20;
+    int element3 = 30;
+    arrayAddLast(a, &element);
+    arrayAddLast(a, &element2);
+    arrayAddLast(a, &element3);
     assert(*(int *)(a->data[0]) == 10);
     assert(*(int *)(a->data[1]) == 20);
     assert(*(int *)(a->data[2]) == 30);
     assert(a->size == 3);
-    testlogAfirm(testType, testNum, "Se agrega un elemento al final de un array con elementos");
+    testlogAfirm(testType, testNum, "An element is added at the end of an array with some elements");
     arrayDelete(a);
 }
 
-void test04ArrayAddLastSuperandoLimite(char *testType, int testNum)
+void test04ArrayAddLastOverflow(char *testType, int testNum)
 {
     array_t *a = arrayNew(1, 2);
-    int elemento = 10;
-    int elemento2 = 20;
-    int elemento3 = 30;
-    arrayAddLast(a, &elemento);
-    arrayAddLast(a, &elemento2);
-    arrayAddLast(a, &elemento3);
+    int element = 10;
+    int element2 = 20;
+    int element3 = 30;
+    arrayAddLast(a, &element);
+    arrayAddLast(a, &element2);
+    arrayAddLast(a, &element3);
     assert(*(int *)(a->data[0]) == 10);
     assert(*(int *)(a->data[1]) == 20);
     assert(a->size == 2);
-    testlogAfirm(testType, testNum, "No se puede agregar un elemento a un array completo");
+    testlogAfirm(testType, testNum, "Can't add an element to a full array");
     arrayDelete(a);
 }
 
-void test05ArrayRemoveElementoUnico(char *testType, int testNum)
+void test05ArrayRemoveOneElement(char *testType, int testNum)
 {
     array_t *a = arrayNew(1, 3);
     int32_t num = 3;
@@ -607,12 +607,12 @@ void test05ArrayRemoveElementoUnico(char *testType, int testNum)
     int32_t *elementRemoved = arrayRemove(a, 0);
     assert(*elementRemoved == num);
     assert(a->size == 0);
-    testlogAfirm(testType, testNum, "Se remueve el unico elemento de un array");
+    testlogAfirm(testType, testNum, "The only element of an array is removed");
     arrayDeleteC(a);
     intDelete(elementRemoved);
 }
 
-void test06ArrayRemoveElementoMedio(char *testType, int testNum)
+void test06ArrayRemoveElementInTheMiddle(char *testType, int testNum)
 {
     array_t *a = arrayNew(1, 3);
     int32_t num = 3;
@@ -624,12 +624,12 @@ void test06ArrayRemoveElementoMedio(char *testType, int testNum)
     int32_t *elementRemoved = arrayRemove(a, 1);
     assert(*elementRemoved == num2);
     assert(a->size == 2);
-    testlogAfirm(testType, testNum, "Se remueve un elemento intermedio de un array");
+    testlogAfirm(testType, testNum, "An element in the middle of the array is removed");
     arrayDeleteC(a);
     intDelete(elementRemoved);
 }
 
-void test07ArrayRemoveElementoUltimo(char *testType, int testNum)
+void test07ArrayRemoveLastElement(char *testType, int testNum)
 {
     array_t *a = arrayNew(1, 3);
     int32_t num = 3;
@@ -641,12 +641,12 @@ void test07ArrayRemoveElementoUltimo(char *testType, int testNum)
     int32_t *elementRemoved = arrayRemove(a, 2);
     assert(*elementRemoved == num3);
     assert(a->size == 2);
-    testlogAfirm(testType, testNum, "Se remueve el ultimo elemento de un array");
+    testlogAfirm(testType, testNum, "The last element of an array is removed");
     arrayDeleteC(a);
     intDelete(elementRemoved);
 }
 
-void test08ArrayRemoveFueraDeRango(char *testType, int testNum)
+void test08ArrayRemoveOutOfBounds(char *testType, int testNum)
 {
     array_t *a = arrayNew(1, 3);
     int num = 3;
@@ -658,11 +658,11 @@ void test08ArrayRemoveFueraDeRango(char *testType, int testNum)
     int *elementRemoved = arrayRemove(a, 3);
     assert(elementRemoved == NULL);
     assert(a->size == 3);
-    testlogAfirm(testType, testNum, "No se puede remover un elemento fuera de rango");
+    testlogAfirm(testType, testNum, "Can't remove an element out of bounds");
     arrayDeleteC(a);
 }
 
-void test09ArrayRemoveDeUnArrayConDosElementos(char *testType, int testNum)
+void test09ArrayRemoveArrayWithTwoElements(char *testType, int testNum)
 {
     array_t *a = arrayNew(1, 3);
     int num = 3;
@@ -673,65 +673,65 @@ void test09ArrayRemoveDeUnArrayConDosElementos(char *testType, int testNum)
     int *resultado = arrayRemove(a, i);
     assert(*resultado == num);
     assert(a->size == 1);
-    testlogAfirm(testType, testNum, "arrayRemove primer elemento de un array de dos elementos");
+    testlogAfirm(testType, testNum, "arrayRemove first element of an array with two elements");
     intDelete(resultado);
     arrayDelete(a);
 }
 
-void test10ArrayRemoveDeUnArrayConUnElemento(char *testType, int testNum)
+void test10ArrayRemoveDeArrayWithOneElement(char *testType, int testNum)
 {
     array_t *a = arrayNew(1, 3);
     int num = 3;
     arrayAddLast(a, &num);
     uint8_t i = 0;
-    int *resultado = arrayRemove(a, i);
-    assert(*resultado == num);
+    int *result= arrayRemove(a, i);
+    assert(*result == num);
     assert(a->size == 0);
-    testlogAfirm(testType, testNum, "arrayRemove unico elemento de un array");
-    intDelete(resultado);
+    testlogAfirm(testType, testNum, "arrayRemove on an array with one element");
+    intDelete(result);
     arrayDelete(a);
 }
 
-void test11ArrayDeleteArrayVacio(char *testType, int testNum)
+void test11ArrayDeleteEmptyArray(char *testType, int testNum)
 {
     array_t *a = arrayNew(1, 10);
     arrayDelete(a);
-    testlogAfirm(testType, testNum, "Se borra un array vacio");
+    testlogAfirm(testType, testNum, "An empty array is deleted");
 }
 
-void test12ArrayDeleteArrayConElementos(char *testType, int testNum)
+void test12ArrayDeleteArrayWithSomeElements(char *testType, int testNum)
 {
     array_t *a = arrayNew(1, 10);
-    int elemento = 10;
-    int elemento2 = 20;
-    arrayAddLast(a, &elemento);
-    arrayAddLast(a, &elemento2);
+    int element = 10;
+    int element2 = 20;
+    arrayAddLast(a, &element);
+    arrayAddLast(a, &element2);
     assert(a->size == 2);
     arrayDelete(a);
-    testlogAfirm(testType, testNum, "Se borra un array con elementos");
+    testlogAfirm(testType, testNum, "An array with some elements is deleted");
 }
 
-void test13ArrayGetSizeVacio(char *testType, int testNum)
+void test13ArrayGetSizeEmpty(char *testType, int testNum)
 {
     array_t *a = arrayNew(1, 10);
     uint8_t size = arrayGetSize(a);
     assert(size == 0);
-    testlogAfirm(testType, testNum, "Se obtiene el size de un array vacio");
+    testlogAfirm(testType, testNum, "The size of an empty array is obtained");
     arrayDelete(a);
 }
 
-void test14ArrayGetSizeConUnElemento(char *testType, int testNum)
+void test14ArrayGetSizeWithOneElement(char *testType, int testNum)
 {
     array_t *a = arrayNew(1, 10);
     int num = 3;
     arrayAddLast(a, &num);
     uint8_t size = arrayGetSize(a);
     assert(size == 1);
-    testlogAfirm(testType, testNum, "Se obtiene el size de un array con un elemento");
+    testlogAfirm(testType, testNum, "The size of an array with one element is obtained");
     arrayDelete(a);
 }
 
-void test15ArrayGetSizeConVariosElementos(char *testType, int testNum)
+void test15ArrayGetSizeWithSomeElements(char *testType, int testNum)
 {
     array_t *a = arrayNew(1, 10);
     int num = 3;
@@ -740,33 +740,33 @@ void test15ArrayGetSizeConVariosElementos(char *testType, int testNum)
     arrayAddLast(a, &num);
     uint8_t size = arrayGetSize(a);
     assert(size == 3);
-    testlogAfirm(testType, testNum, "Se obtiene el size de un array con varios elementos");
+    testlogAfirm(testType, testNum, "The size of an array with some elements is obtained");
     arrayDelete(a);
 }
 
 void test16ArraySwap(char *testType, int testNum)
 {
     array_t *a = arrayNew(1, 2);
-    int elemento = 10;
-    int elemento2 = 20;
-    arrayAddLast(a, &elemento);
-    arrayAddLast(a, &elemento2);
+    int element = 10;
+    int element2 = 20;
+    arrayAddLast(a, &element);
+    arrayAddLast(a, &element2);
     assert(*(int *)(a->data[0]) == 10);
     assert(*(int *)(a->data[1]) == 20);
     arraySwap(a, 0, 1);
     assert(*(int *)(a->data[0]) == 20);
     assert(*(int *)(a->data[1]) == 10);
-    testlogAfirm(testType, testNum, "Se swapean dos elementos de un array");
+    testlogAfirm(testType, testNum, "Two elements of an array are swaped");
     arrayDelete(a);
 }
 
-void test17ArraySwapExcedido(char *testType, int testNum)
+void test17ArraySwapOutOfBounds(char *testType, int testNum)
 {
     array_t *a = arrayNew(1, 2);
-    int elemento = 10;
-    int elemento2 = 20;
-    arrayAddLast(a, &elemento);
-    arrayAddLast(a, &elemento2);
+    int element = 10;
+    int element2 = 20;
+    arrayAddLast(a, &element);
+    arrayAddLast(a, &element2);
     assert(*(int *)(a->data[0]) == 10);
     assert(*(int *)(a->data[1]) == 20);
     arraySwap(a, 3, 1);
@@ -775,36 +775,36 @@ void test17ArraySwapExcedido(char *testType, int testNum)
     arraySwap(a, 0, 3);
     assert(*(int *)(a->data[0]) == 10);
     assert(*(int *)(a->data[1]) == 20);
-    testlogAfirm(testType, testNum, "No se puede swapear a direcciones fuera del array");
+    testlogAfirm(testType, testNum, "Out of bounds directions can´t be swapped");
     arrayDelete(a);
 }
 
-void test18ArrayPrintDeArrayVacio(char *testType, int testNum)
+void test18ArrayPrintEmptyArray(char *testType, int testNum)
 {
-    FILE *file = fopen("outArrayVacio.txt", "w");
+    FILE *file = fopen("outEmptyArray.txt", "w");
     array_t *a = arrayNew(1, 5);
     char ch;
 
     arrayPrint(a, file);
     fclose(file);
 
-    file = fopen("outArrayVacio.txt", "r");
+    file = fopen("outEmptyArray.txt", "r");
 
     ch = fgetc(file);
     assert(ch == '[');
     ch = fgetc(file);
     assert(ch == ']');
 
-    testlogAfirm(testType, testNum, "Dada un array vacio, arrayPrint genera el archivo correspondiente imprimiendo lo esperado '[]'");
+    testlogAfirm(testType, testNum, "Given an empty array, arrayPrint generates the corresponding file printing the expected: '[]'");
     fclose(file);
     arrayDelete(a);
 }
 
-void test19ArrayPrintDeArrayConUnSoloElementos(char *testType, int testNum)
+void test19ArrayPrintArrayWithOneElement(char *testType, int testNum)
 {
     array_t *a = arrayNew(1, 5);
-    int elemento = 10;
-    arrayAddLast(a, &elemento);
+    int element = 10;
+    arrayAddLast(a, &element);
 
     FILE *file = fopen("outArray.txt", "w");
     arrayPrint(a, file);
@@ -822,25 +822,25 @@ void test19ArrayPrintDeArrayConUnSoloElementos(char *testType, int testNum)
     ch = fgetc(file);
     assert(ch == ']');
 
-    testlogAfirm(testType, testNum, "Dada un array con un elemento, arrayPrint genera el archivo correspondiente imprimiendo lo esperado");
+    testlogAfirm(testType, testNum, "Given an array with one element, arrayPrint generates the corresponding file printing the expected");
     fclose(file);
 
     arrayDelete(a);
 }
 
-void test20ArrayPrintDeArrayConVariosElementos(char *testType, int testNum)
+void test20ArrayPrintArrayWithSomeElements(char *testType, int testNum)
 {
     array_t *a = arrayNew(1, 5);
-    int elemento = 10;
-    int elemento2 = 20;
-    arrayAddLast(a, &elemento);
-    arrayAddLast(a, &elemento2);
+    int element = 10;
+    int element2 = 20;
+    arrayAddLast(a, &element);
+    arrayAddLast(a, &element2);
 
-    FILE *file = fopen("outArrayVarios.txt", "w");
+    FILE *file = fopen("outArraySomeElements.txt", "w");
     arrayPrint(a, file);
     fclose(file);
 
-    file = fopen("outArrayVarios.txt", "r");
+    file = fopen("outArraySomeElements.txt", "r");
 
     char ch;
     ch = fgetc(file);
@@ -858,13 +858,13 @@ void test20ArrayPrintDeArrayConVariosElementos(char *testType, int testNum)
     ch = fgetc(file);
     assert(ch == ']');
 
-    testlogAfirm(testType, testNum, "Dada un array con elementos, arrayPrint genera el archivo correspondiente imprimiendo lo esperado");
+    testlogAfirm(testType, testNum, "Given an array with some elements, arrayPrint generates the corresponding file printing the expected");
     fclose(file);
 
     arrayDelete(a);
 }
 
-void test21ArrayGetDeUnaPosicionValida(char *testType, int testNum)
+void test21ArrayGetValidPosition(char *testType, int testNum)
 {
     array_t *a = arrayNew(1, 3);
     int num = 3;
@@ -874,14 +874,14 @@ void test21ArrayGetDeUnaPosicionValida(char *testType, int testNum)
     arrayAddLast(a, &num1);
     arrayAddLast(a, &num2);
     uint8_t i = 1;
-    int *resultado = arrayGet(a, i);
-    assert(*resultado == num1);
-    testlogAfirm(testType, testNum, "arrayGet de posicion Valida");
+    int *result = arrayGet(a, i);
+    assert(*result == num1);
+    testlogAfirm(testType, testNum, "arrayGet valid position");
 
     arrayDelete(a);
 }
 
-void test22ArrayGetDeUnaPosicionInvalida(char *testType, int testNum)
+void test22ArrayGetInvalidPosition(char *testType, int testNum)
 {
     array_t *a = arrayNew(1, 3);
     int num = 3;
@@ -891,9 +891,9 @@ void test22ArrayGetDeUnaPosicionInvalida(char *testType, int testNum)
     arrayAddLast(a, &num1);
     arrayAddLast(a, &num2);
     uint8_t i = -1;
-    int *resultado = arrayGet(a, i);
-    assert(resultado == NULL);
-    testlogAfirm(testType, testNum, "arrayGet de posicion Invalida");
+    int *result = arrayGet(a, i);
+    assert(result == NULL);
+    testlogAfirm(testType, testNum, "arrayGet invalid position");
 
     arrayDelete(a);
 }
@@ -909,7 +909,7 @@ void test01CardNew(char *testType, int testNum)
     assert(*(card->number) == 12);
     assert((card->stacked->type) == 3);
     assert((card->stacked->size) == 0);
-    testlogAfirm(testType, testNum, "cardNew crea correctamente una carta");
+    testlogAfirm(testType, testNum, "cardNew creates a card successfully");
     cardDeleteC(card);
 }
 
@@ -920,7 +920,7 @@ void test02CardAddStacked(char *testType, int testNum)
     card_t *card = cardNew(str, &number);
 
     int32_t number2 = 4;
-    char str2[] = "oro";
+    char str2[] = "coins";
     card_t *card2 = cardNew(str2, &number2);
 
     cardAddStacked(card, card2);
@@ -931,7 +931,7 @@ void test02CardAddStacked(char *testType, int testNum)
     assert(*(cardStacked->number) == number2);
     assert(strcmp(cardStacked->suit, str2) == 0);
 
-    testlogAfirm(testType, testNum, "cardAddStacked agrega una carta al staked de otra");
+    testlogAfirm(testType, testNum, "cardAddStacked adds a cart to the stacked of another one");
     cardDeleteC(card);
     cardDeleteC(card2);
 }
@@ -944,16 +944,16 @@ void test03CardDelete(char *testType, int testNum)
 
     cardDelete(card);
     free(number);
-    testlogAfirm(testType, testNum, "cardDelete de una carta, stacked vacio");
+    testlogAfirm(testType, testNum, "cardDelete of a card, empty stacked");
 }
 
-void test04CardDeleteConStacked(char *testType, int testNum)
+void test04CardDeleteWithStacked(char *testType, int testNum)
 {
     int32_t *number = malloc(sizeof(int32_t));
     *number = 10;
     card_t *card = cardNew("swords", number);
     int32_t number2 = 4;
-    char str2[6] = "oro";
+    char str2[6] = "coins";
     card_t *card2 = cardNew(str2, &number2);
 
     cardAddStacked(card, card2);
@@ -961,7 +961,7 @@ void test04CardDeleteConStacked(char *testType, int testNum)
     cardDelete(card);
     cardDelete(card2);
     free(number);
-    testlogAfirm(testType, testNum, "cardDelete de una carta, stacked no vacio");
+    testlogAfirm(testType, testNum, "cardDelete of a card, stacked not empty");
 }
 
 void test05CardGetNumber(char *testType, int testNum)
@@ -972,12 +972,12 @@ void test05CardGetNumber(char *testType, int testNum)
 
     int32_t *cardNumber = cardGetNumber(card);
     assert(*cardNumber == number);
-    testlogAfirm(testType, testNum, "cardGetNumber obtiene correctamente el numero de una carta");
+    testlogAfirm(testType, testNum, "cardGetNumber obtains correctly the number of a card");
 
     cardDelete(card);
 }
 
-void test06CardGetStackedVacio(char *testType, int testNum)
+void test06CardGetStackedEmpty(char *testType, int testNum)
 {
     int32_t number = 12;
     char str[6] = "swords";
@@ -986,7 +986,7 @@ void test06CardGetStackedVacio(char *testType, int testNum)
     list_t *stacked = cardGetStacked(card);
 
     assert(stacked->size == 0);
-    testlogAfirm(testType, testNum, "cardGetStacked obtiene el stacked vacio");
+    testlogAfirm(testType, testNum, "cardGetStacked obtains the empty stacked");
 
     cardDelete(card);
 }
@@ -998,7 +998,7 @@ void test07CardGetStacked(char *testType, int testNum)
     card_t *card = cardNew(str, &number);
 
     int32_t number2 = 4;
-    char str2[] = "oro";
+    char str2[] = "coins";
     card_t *card2 = cardNew(str, &number2);
 
     cardAddStacked(card, card2);
@@ -1006,33 +1006,33 @@ void test07CardGetStacked(char *testType, int testNum)
     card_t *cardStacked = listGet(cardGetStacked(card), 0);
     assert(*(cardStacked->number) == number2);
     assert(strcmp(cardStacked->suit, str2));
-    testlogAfirm(testType, testNum, "cardGetStacked obtiene el stacked con una carta");
+    testlogAfirm(testType, testNum, "cardGetStacked gets the stacked with one card");
 
     cardDelete(card);
     cardDelete(card2);
 }
 
-void test08CardGetSuitCartaConSuitNoVacio(char *testType, int testNum)
+void test08CardGetSuitCardWithNotEmptySuit(char *testType, int testNum)
 {
     int32_t number = 10;
     card_t *card = cardNew("swords", &number);
     char *suit = cardGetSuit(card);
     assert(strcmp("swords", suit) == 0);
     cardDelete(card);
-    testlogAfirm(testType, testNum, "cardGetSuit de carta con suit de varios elementos");
+    testlogAfirm(testType, testNum, "cardGetSuit card with suit with some elements");
 }
 
-void test09CardGetSuitCartaConSuitVacio(char *testType, int testNum)
+void test09CardGetSuitCardWithEmptySuit(char *testType, int testNum)
 {
     int32_t number = 10;
     card_t *card = cardNew("", &number);
     char *suit = cardGetSuit(card);
     assert(strcmp("", suit) == 0);
     cardDelete(card);
-    testlogAfirm(testType, testNum, "cardGetSuit de carta con suit vacio");
+    testlogAfirm(testType, testNum, "cardGetSuit card with empty suit");
 }
 
-void test10CardCmpDeCartasIguales(char *testType, int testNum)
+void test10CardCmpEqualCards(char *testType, int testNum)
 {
     int32_t number = 15;
     int32_t number2 = 15;
@@ -1040,33 +1040,33 @@ void test10CardCmpDeCartasIguales(char *testType, int testNum)
     card_t *card2 = cardNew("swords", &number2);
 
     assert(cardCmp(card, card2) == 0);
-    testlogAfirm(testType, testNum, "cardCmp de dos cartas con mismo suit y numero");
+    testlogAfirm(testType, testNum, "cardCmp two cards with same suit and number");
     cardDelete(card);
     cardDelete(card2);
 }
 
-void test11CardCmpDeCartasConSuitDistinto(char *testType, int testNum)
+void test11CardCmpCardWithDifferentSuit(char *testType, int testNum)
 {
     int32_t number = 15;
     int32_t number2 = 15;
-    card_t *card = cardNew("copa", &number);
+    card_t *card = cardNew("cups", &number);
     card_t *card2 = cardNew("swords", &number2);
 
     assert(cardCmp(card, card2) == 1);
-    testlogAfirm(testType, testNum, "cardCmp de dos cartas con suit distinto");
+    testlogAfirm(testType, testNum, "cardCmp two cards with different suit");
     cardDelete(card);
     cardDelete(card2);
 }
 
-void test12CardCmpDeCartasConMismoSuitYNumeroDistitno(char *testType, int testNum)
+void test12CardCmpCardsWithDifferentNumber(char *testType, int testNum)
 {
     int32_t number = 24;
     int32_t number2 = 15;
-    card_t *card = cardNew("copa", &number);
-    card_t *card2 = cardNew("copa", &number2);
+    card_t *card = cardNew("cups", &number);
+    card_t *card2 = cardNew("cups", &number2);
 
     assert(cardCmp(card, card2) == -1);
-    testlogAfirm(testType, testNum, "cardCmp de dos cartas con mismo suit y numero distinto");
+    testlogAfirm(testType, testNum, "cardCmp two cards with different number");
     cardDelete(card);
     cardDelete(card2);
 }
@@ -1096,9 +1096,9 @@ void test14CardPrint(char *testType, int testNum)
     cardDelete(card);
 }
 
-/*---------------------------------- CATEDRA TEST -------------------------------------------*/
+/*---------------------------------- EXTRA TEST -------------------------------------------*/
 
-void testCatedraArray(card_t **cards, uint8_t size)
+void testExtraArray(card_t **cards, uint8_t size)
 {
     array_t *array = arrayNew(3, 5);
 
@@ -1107,7 +1107,7 @@ void testCatedraArray(card_t **cards, uint8_t size)
         arrayAddLast(array, cards[i]);
     }
 
-    FILE *file = fopen("outCatedraArray.txt", "w");
+    FILE *file = fopen("outExtraArray.txt", "w");
 
     arrayPrint(array, file);
 
@@ -1122,10 +1122,10 @@ void testCatedraArray(card_t **cards, uint8_t size)
     arrayDelete(array);
     cardDelete(c);
     fclose(file);
-    testlogAfirm("Catedra", 1, "Se completan los test de la catedra para Array");
+    testlogAfirm("Extra", 1, "Extra tests for array were completed");
 }
 
-void testCatedraList(card_t **cards, uint8_t size)
+void testExtraList(card_t **cards, uint8_t size)
 {
     list_t *list = listNew(3);
 
@@ -1134,7 +1134,7 @@ void testCatedraList(card_t **cards, uint8_t size)
         listAddLast(list, cards[i]);
     }
 
-    FILE *file = fopen("outCatedraList.txt", "w");
+    FILE *file = fopen("outExtraList.txt", "w");
     listPrint(list, file);
 
     card_t *cardDest = listGet(list, 1);
@@ -1148,7 +1148,7 @@ void testCatedraList(card_t **cards, uint8_t size)
     listDelete(list);
     cardDelete(c);
     fclose(file);
-    testlogAfirm("Catedra", 2, "Se completan los test de la catedra para List");
+    testlogAfirm("Extra", 2, "Extra tests for list were completed");
 }
 
 /*-------------------------  TESTS  -------------------------*/
@@ -1162,14 +1162,14 @@ void testInt()
     int32_t *number_2 = malloc(sizeof(int32_t));
     *number_2 = 8;
 
-    test01IntCmpConPrimerElementoMayorAlSegundo(type, 1, number, number_2);
+    test01IntCmpWithFirstElementGreaterThanSecond(type, 1, number, number_2);
 
-    test02IntCmpConPrimerElementoMenorAlSegundo(type, 2, number_2, number);
-    test03IntCmpConDosNumerosIguales(type, 3, number);
+    test02IntCmpWithFirstElementLessThanSecond(type, 2, number_2, number);
+    test03IntCmpWithEqualNumbers(type, 3, number);
 
-    test04IntPrintDeUnElemento(type, 4, number);
+    test04IntPrint(type, 4, number);
 
-    test05IntCloneDeUnElemento(type, 5, number);
+    test05IntClone(type, 5, number);
 
     intDelete(number);
     intDelete(number_2);
@@ -1180,53 +1180,53 @@ void testList()
 
     char *type = "List";
 
-    test01ListNewSinElementos(type, 1);
+    test01ListNewWithoutElements(type, 1);
 
-    test02ListAddFirstEnListaSinElementos(type, 2);
-    test03ListAddFirstConsecutivosEnListaSinElementos(type, 3);
+    test02ListAddFirstInEmptyList(type, 2);
+    test03ListAddFirstConsecutivesInEmptyList(type, 3);
 
-    test04ListGetSizeConListaSinElementos(type, 4);
-    test05ListGetSizeConListaDeVariosElementos(type, 5);
+    test04ListGetSizeWithEmptyList(type, 4);
+    test05ListGetSizeListWithSomeElements(type, 5);
 
-    test06ListGetConListaDeVariosElementos(type, 6);
+    test06ListGetWithSomeElements(type, 6);
 
-    test07ListAddLastEnListaVacia(type, 7);
+    test07ListAddLastWithEmptyList(type, 7);
 
-    test08ListRemoveEnListaSinElementos(type, 8);
-    test09ListRemoveEnListaConVariosElementos(type, 9);
+    test08ListRemoveWithEmptyList(type, 8);
+    test09ListRemoveListWithSomeElements(type, 9);
 
-    test10ListSwapDeListaVacia(type, 10);
-    test11ListSwapEnListaConUnSoloElemento(type, 11);
-    test12ListSwapEnListaDeVariosElementos(type, 12);
+    test10ListSwapWithEmptyList(type, 10);
+    test11ListSwapListWithOneElement(type, 11);
+    test12ListSwapListWithSomeElements(type, 12);
 
-    test13ListCloneDeListaVacia(type, 13);
-    test14ListCloneDeListaConUnElemento(type, 14);
-    test15ListCloneDeListaConVariosElementos(type, 15);
+    test13ListCloneEmptyList(type, 13);
+    test14ListCloneListWithOneElement(type, 14);
+    test15ListCloneListWithSomeElements(type, 15);
 
-    test16ListPrintDeListaVacia(type, 16);
-    test17ListPrintDeListaConUnElemento(type, 17);
-    test18ListPrintDeListaConVariosElementos(type, 18);
+    test16ListPrintEmptyList(type, 16);
+    test17ListPrintListWithOneElement(type, 17);
+    test18ListPrintListWithSomeElements(type, 18);
 }
 
 void testString()
 {
     char type[] = "String";
 
-    test01StrDeleteVacio(type, 1);
-    test02StrDeleteNoVacio(type, 2);
+    test01StrDeleteEmpty(type, 1);
+    test02StrDeleteNotEmpty(type, 2);
 
-    test03StrLenVacio(type, 3);
+    test03StrLenEmpty(type, 3);
     test04StrLen(type, 4);
 
     test05StrPrint(type, 5);
-    test06StrPrintVacio(type, 6);
+    test06StrPrintEmpty(type, 6);
 
-    test07StrCloneEnStringConVariosElementos(type, 7);
-    test08StrCloneDeStringVacio(type, 8);
+    test07StrCloneStringWithSomeElements(type, 7);
+    test08StrCloneEmptyString(type, 8);
 
-    test09StrCmpDeDosStringsConVariosElementos(type, 9);
-    test10StrCmpDeDosStringsVacios(type, 10);
-    test11StrCmpConUnStrinVacio(type, 11);
+    test09StrCmpOfTwoStringWithSomeElements(type, 9);
+    test10StrCmpOfTwoEmptyStrings(type, 10);
+    test11StrCmpWithAnEmptyString(type, 11);
 }
 
 void testArray()
@@ -1235,33 +1235,33 @@ void testArray()
 
     test01ArrayNew(type, 1);
 
-    test02ArrayAddLastConUnElemento(type, 2);
-    test03ArrayAddLastConVariosElementos(type, 3);
-    test04ArrayAddLastSuperandoLimite(type, 4);
+    test02ArrayAddLastWithOneElement(type, 2);
+    test03ArrayAddLastWithSomeElements(type, 3);
+    test04ArrayAddLastOverflow(type, 4);
 
-    test05ArrayRemoveElementoUnico(type, 5);
-    test06ArrayRemoveElementoMedio(type, 6);
-    test07ArrayRemoveElementoUltimo(type, 7);
-    test08ArrayRemoveFueraDeRango(type, 8);
-    test09ArrayRemoveDeUnArrayConDosElementos(type, 9);
-    test10ArrayRemoveDeUnArrayConUnElemento(type, 10);
+    test05ArrayRemoveOneElement(type, 5);
+    test06ArrayRemoveElementInTheMiddle(type, 6);
+    test07ArrayRemoveLastElement(type, 7);
+    test08ArrayRemoveOutOfBounds(type, 8);
+    test09ArrayRemoveArrayWithTwoElements(type, 9);
+    test10ArrayRemoveDeArrayWithOneElement(type, 10);
 
-    test11ArrayDeleteArrayVacio(type, 11);
-    test12ArrayDeleteArrayConElementos(type, 12);
+    test11ArrayDeleteEmptyArray(type, 11);
+    test12ArrayDeleteArrayWithSomeElements(type, 12);
 
-    test13ArrayGetSizeVacio(type, 13);
-    test14ArrayGetSizeConUnElemento(type, 14);
-    test15ArrayGetSizeConVariosElementos(type, 15);
+    test13ArrayGetSizeEmpty(type, 13);
+    test14ArrayGetSizeWithOneElement(type, 14);
+    test15ArrayGetSizeWithSomeElements(type, 15);
 
     test16ArraySwap(type, 16);
-    test17ArraySwapExcedido(type, 17);
+    test17ArraySwapOutOfBounds(type, 17);
 
-    test18ArrayPrintDeArrayVacio(type, 18);
-    test19ArrayPrintDeArrayConUnSoloElementos(type, 19);
-    test20ArrayPrintDeArrayConVariosElementos(type, 20);
+    test18ArrayPrintEmptyArray(type, 18);
+    test19ArrayPrintArrayWithOneElement(type, 19);
+    test20ArrayPrintArrayWithSomeElements(type, 20);
 
-    test21ArrayGetDeUnaPosicionValida(type, 21);
-    test22ArrayGetDeUnaPosicionInvalida(type, 22);
+    test21ArrayGetValidPosition(type, 21);
+    test22ArrayGetInvalidPosition(type, 22);
 }
 
 void testCard()
@@ -1274,24 +1274,24 @@ void testCard()
     test02CardAddStacked(type, 2);
 
     test03CardDelete(type, 3);
-    test04CardDeleteConStacked(type, 4);
+    test04CardDeleteWithStacked(type, 4);
 
     test05CardGetNumber(type, 5);
-    test06CardGetStackedVacio(type, 6);
+    test06CardGetStackedEmpty(type, 6);
     test07CardGetStacked(type, 7);
-    test08CardGetSuitCartaConSuitNoVacio(type, 8);
-    test09CardGetSuitCartaConSuitVacio(type, 9);
+    test08CardGetSuitCardWithNotEmptySuit(type, 8);
+    test09CardGetSuitCardWithEmptySuit(type, 9);
 
-    test10CardCmpDeCartasIguales(type, 10);
-    test11CardCmpDeCartasConSuitDistinto(type, 11);
-    test12CardCmpDeCartasConMismoSuitYNumeroDistitno(type, 12);
+    test10CardCmpEqualCards(type, 10);
+    test11CardCmpCardWithDifferentSuit(type, 11);
+    test12CardCmpCardsWithDifferentNumber(type, 12);
 
     test13CardClone(type, 13);
 
     test14CardPrint(type, 14);
 }
 
-void testCatedra()
+void testExtra()
 {
     int32_t num1 = 12;
     int32_t num2 = 1;
@@ -1301,14 +1301,14 @@ void testCatedra()
 
     card_t *card1 = cardNew("swords", &num1);
     card_t *card2 = cardNew("clubs", &num2);
-    card_t *card3 = cardNew("oro", &num3);
-    card_t *card4 = cardNew("oro", &num4);
-    card_t *card5 = cardNew("copa", &num5);
+    card_t *card3 = cardNew("coins", &num3);
+    card_t *card4 = cardNew("coins", &num4);
+    card_t *card5 = cardNew("cups", &num5);
 
     card_t *cards[5] = {card1, card2, card3, card4, card5};
 
-    testCatedraArray(cards, 5);
-    testCatedraList(cards, 5);
+    testExtraArray(cards, 5);
+    testExtraList(cards, 5);
 
     for (int i = 0; i < 5; i++)
     {
@@ -1320,19 +1320,19 @@ void testCatedra()
 
 int main(void)
 {
-    testlogTitle("Pruebas realizadas para implementaciones en C");
+    testlogTitle("Test made for implementations in C");
     testInt();
     testlogSeparator();
     testList();
 
-    testlogTitle("Pruebas realizadas para implementaciones en asm");
+    testlogTitle("Test made for implementations in asm");
     testString();
     testlogSeparator();
     testArray();
     testlogSeparator();
     testCard();
 
-    testlogTitle("Pruebas realizadas para la catedra");
-    testCatedra();
+    testlogTitle("Extra tests");
+    testExtra();
     testlogSeparator();
 }

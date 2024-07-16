@@ -49,9 +49,9 @@ parse_opt(int key, char *arg, struct argp_state *state)
     case ARGP_KEY_END:
         count = argz_count(a->argz, a->argz_len);
         if (count > (sizeof(test_run.testcases) / sizeof(test_run.testcases[0])))
-            argp_failure(state, 1, 0, "Demasiados argumentos");
+            argp_failure(state, 1, 0, "Too many arguments");
         if (count < 1)
-            argp_failure(state, 1, 0, "Faltan argumentos");
+            argp_failure(state, 1, 0, "Not enought arguments");
 
         break;
     }
@@ -92,10 +92,10 @@ void parse_cli(int argc, char **argv)
     test_run.file = NULL;
 
     struct argp_option options[] = {
-        {"output", 'o', "FILE", 0, "Archivo de salida", 0},
+        {"output", 'o', "FILE", 0, "Output file", 0},
         {0}};
 
-    char help_str[200] = "Valores posibles para TESTCASE:";
+    char help_str[200] = "Possible values for TESTCASE:";
     for (int i = 0; i < GAME_TEST + 1; i++)
     {
         strcat(strcat(help_str, " "), valid_tests_str[i]);
